@@ -17,4 +17,28 @@ public class PersonJdbcIDao {
     public List<Person> findAll() {
         return this.template.query("select * from Person", new BeanPropertyRowMapper<>(Person.class));
     }
+
+    public Person findById(int id) {
+        return this.template.queryForObject(
+                "select * from Person where id = ?"
+                , new Object[]{id}
+                , new BeanPropertyRowMapper<>(Person.class)
+        );
+    }
+
+    public List<Person> findByName(String name) {
+        return this.template.query(
+                "select * from Person where name = ?"
+                , new Object[]{name}
+                , new BeanPropertyRowMapper<>(Person.class)
+        );
+    }
+
+    public List<Person> findByLocation(String location) {
+        return this.template.query(
+                "select * from Person where location = ?"
+                , new Object[]{location}
+                , new BeanPropertyRowMapper<>(Person.class)
+        );
+    }
 }

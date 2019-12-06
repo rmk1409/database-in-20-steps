@@ -10,17 +10,20 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
 public class DatabaseIn20StepsApplication implements CommandLineRunner {
-	private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseIn20StepsApplication.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseIn20StepsApplication.class);
 
-	@Autowired
-	private PersonJdbcIDao jdbc;
+    @Autowired
+    private PersonJdbcIDao jdbc;
 
-	public static void main(String[] args) {
-		SpringApplication.run(DatabaseIn20StepsApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(DatabaseIn20StepsApplication.class, args);
+    }
 
-	@Override
-	public void run(String... args) throws Exception {
-		LOGGER.info("Show all Persons -> {}", this.jdbc.findAll());
+    @Override
+    public void run(String... args) throws Exception {
+        LOGGER.info("Show all Persons -> {}", this.jdbc.findAll());
+        LOGGER.info("Find the Person (10002) -> {}", this.jdbc.findById(10002));
+		LOGGER.info("Show all James -> {}", this.jdbc.findByName("James"));
+		LOGGER.info("Show all New Yorks -> {}", this.jdbc.findByLocation("New York"));
 	}
 }
