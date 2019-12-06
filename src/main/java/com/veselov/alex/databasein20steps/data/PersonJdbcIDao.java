@@ -4,8 +4,11 @@ import com.veselov.alex.databasein20steps.bean.Person;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Repository;
 
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 
@@ -16,7 +19,7 @@ public class PersonJdbcIDao {
     private JdbcTemplate template;
 
     public List<Person> findAll() {
-        return this.template.query("select * from Person", new BeanPropertyRowMapper<>(Person.class));
+        return this.template.query("select * from Person", new PersonRowMapper());
     }
 
     public Person findById(int id) {
@@ -25,6 +28,18 @@ public class PersonJdbcIDao {
                 , new Object[]{id}
                 , new BeanPropertyRowMapper<>(Person.class)
         );
+    }
+
+    class PersonRowMapper implements RowMapper<Person> {
+        @Override
+        public Person mapRow(ResultSet rs, int i) throws SQLException {
+            Person person = new Person();
+            person.setId(rs.getInt("id"));
+            person.setName(rs.getString("name"));
+            person.setLocation(rs.getString("location"));
+            person.setBirthDate(rs.getTimestamp("birth_date"));
+            return person;
+        }
     }
 
     public int deleteById(int id) {
